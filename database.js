@@ -23,16 +23,16 @@ const trackSchema = mongoose.Schema({
 
 const Track = mongoose.model('Track', trackSchema);
 
-// for (let i = 0; i < data.sampleData.length; i += 1) {
-//   const trackDocument = new Track(data.sampleData[i]);
-//   trackDocument.save((error, data) => {
-//     if (error) {
-//       console.log('error saving document');
-//     } else {
-//       console.log('document successfully saved', data);
-//     }
-//   });
-// }
+for (let i = 0; i < data.sampleData.length; i += 1) {
+  const trackDocument = new Track(data.sampleData[i]);
+  trackDocument.save((error, data) => {
+    if (error) {
+      console.log('error saving document');
+    } else {
+      console.log('document successfully saved', data);
+    }
+  });
+}
 
 // Track.find((error, tracks) => {
 //   if (error) {
@@ -42,12 +42,14 @@ const Track = mongoose.model('Track', trackSchema);
 //   }
 // });
 for (let artist in albumArt.albumArtList) {
-  //console.log(albumArt.albumArtList[artist]);
+  console.log(albumArt.albumArtList[artist]);
   let getter = {};
   let setter = {};
   getter.artist = artist;
   setter.albumArt = albumArt.albumArtList[artist];
-  Track.updateMany(getter, { $set: setter });
+  Track.updateMany(getter, { $set: setter.albumArt }, () =>
+     console.log(setter)
+    );
 }
 
 const retrieveSuggestedTracks = (songId, afterRetrieve) => {
@@ -63,6 +65,10 @@ const retrieveSuggestedTracks = (songId, afterRetrieve) => {
     }
   });
 };
+
+
+
+// console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
 
 const incrementMetric = (songId, metric, afterIncrementation) => {
   let fieldToIncrement = {};
